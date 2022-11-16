@@ -30,12 +30,13 @@ class FastGalai(FastInferenceInterface):
         
         
     def dispatch_request(self, args, env) -> Dict:
-        prompt = args[0]["prompt"] 
+        prompt = args[0]["prompt"]
+        prompt = prompt[0] if isinstance(prompt, list) else prompt
         max_tokens = args[0]["max_tokens"]
         top_p = args[0].get('top_p', 0)
         input_length = len(self.model.tokenizer.encode_batch([escape_custom_split_sequence(prompt)])[0].tokens)
         # print(input_length)
-        output = self.model.generate(prompt[0] if isinstance(prompt, list) else prompt, max_length=
+        output = self.model.generate(prompt, max_length=
                                      input_length+max_tokens, top_p=top_p)
         output = output.replace(prompt, "")
         choices = {"text":output}
