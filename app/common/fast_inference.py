@@ -51,9 +51,9 @@ class FastInferenceInterface:
         pass
 
     async def _run_together_server(self) -> None:
-        # only rank 0
-        self.coordinator._on_disconnect.append(self._join_local_coordinator)
+        self.coordinator._on_connect.append(self._join_local_coordinator)
         self.coordinator._on_match_event.append(self.together_request)
+        self.coordinator.subscribe_events("coordinator")
         await self._join_local_coordinator()
         logger.info("Start _run_together_server")
         try:
@@ -90,7 +90,9 @@ class FastInferenceInterface:
             )
             self.subscription_id = await self.coordinator.get_subscription_id("coordinator")
             args = self.coordinator.coordinator.join(
-                asdict(JoinEnvelope(join=join, signature=None)), self.subscription_id)
+                asdict(JoinEnvelope(join=join, signature=None)), 
+                await self.coordinator.get_subscription_id()
+            )
 
         except Exception as e:
             logger.exception(f'_join_local_coordinator failed: {e}')

@@ -98,7 +98,7 @@ class FastGalai(FastInferenceInterface):
 if __name__ == "__main__":
     coord_url = os.environ.get("COORD_URL", "127.0.0.1")
     coordinator = TogetherWeb3(
-        TogetherClientOptions(),
+        TogetherClientOptions(reconnect=True),
         http_url=f"http://{coord_url}:8092",
         websocket_url=f"ws://{coord_url}:8093/websocket"
     )
