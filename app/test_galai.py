@@ -9,13 +9,15 @@ from common.together_web3.together import TogetherWeb3
 
 async def test():
     together_web3 = TogetherWeb3()
+    with open("./foo_input.txt", 'r') as fp:
+        line = fp.readline()
     result = await together_web3.language_model_inference(
         from_dict(
             data_class=LanguageModelInferenceRequest,
             data={
                 "model": "galai",
-                "max_tokens": 16,
-                "prompt": "Scaled dot product attention:\n\n\\[",
+                "max_tokens": 1024,
+                "prompt": line,
             }
         ),
     )
