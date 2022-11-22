@@ -1,31 +1,21 @@
-import galai
-import asyncio
-import base64
-import json
 import os
 import sys
-import time
-from io import BytesIO
-from random import randint
-from typing import Dict
-import requests
-import re
-sys.path.append("./")
-from common.fast_inference import FastInferenceInterface
-from common.together_web3.computer import RequestTypeLanguageModelInference
-from common.together_web3.together import TogetherWeb3, TogetherClientOptions
-from loguru import logger
 import torch
+from typing import Dict
+from together_worker.fast_inference import FastInferenceInterface
+from together_web3.computer import RequestTypeLanguageModelInference
+from together_web3.together import TogetherWeb3, TogetherClientOptions
+
+sys.path.append("./")
+import galai
 from galai.utils import escape_custom_split_sequence
-
-
 
 class FastGalai(FastInferenceInterface):
     def __init__(self, model_name: str, args=None) -> None:
         super().__init__(model_name, args if args is not None else {})
         self.seq_length_limit = 256
         print(f"<FastGalai.__init__> starts")
-        galai_model = galai.load_model("huge")
+        galai_model = galai.load_model("large")
         self.model = galai_model.model
         self.tokenizer = galai_model.tokenizer
         # warm up:

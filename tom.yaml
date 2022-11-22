@@ -1,0 +1,12 @@
+tcm: "129.132.93.86:8092"
+workload: galai_huge
+mode:
+  - name: inference
+    entrypoint: serve.sh
+    gpu: 6
+spec:
+  env:
+  - name: "COORD_URL"
+    value: "127.0.0.1"
+  - name: "HF_HOME"
+    value: "/mnt/ds3lab-scratch/xiayao/cache/HF"
