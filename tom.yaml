@@ -1,5 +1,5 @@
 tcm: "129.132.93.86:8092"
-workload: galai_huge
+workload: galai
 mode:
   - name: inference
     entrypoint: serve.sh

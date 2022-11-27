@@ -30,13 +30,13 @@ class FastGalai(FastInferenceInterface):
         prompt = prompt[0] if isinstance(prompt, list) else prompt
         max_tokens = args[0]["max_tokens"]
         top_p = args[0].get('top_p', 0)
-        
+
         print(f"<dispatch_request> raw input seq <<{prompt}>>")
         encoded_ids = self.tokenizer.encode_batch([escape_custom_split_sequence(prompt)])[0].ids
         encoded_ids = torch.LongTensor([encoded_ids]).to(self.model.device)
         # print(f"<dispatch_request> encoded_input_ids shape {encoded_ids.shape} <<{encoded_ids}>")
         input_length = encoded_ids.shape[1]
-        
+
         do_inference = True
         result_tokens = []
         while do_inference:
@@ -89,10 +89,10 @@ if __name__ == "__main__":
     coord_url = os.environ.get("COORD_URL", "127.0.0.1")
     coordinator = TogetherWeb3(
         TogetherClientOptions(reconnect=True),
-        http_url=f"http://{coord_url}:8092",
+        http_url=f"http://{coord_url}:8094",
         websocket_url=f"ws://{coord_url}:8093/websocket"
     )
-    fip = FastGalai(model_name="galai", args={
+    fip = FastGalai(model_name="galai_large", args={
         "coordinator": coordinator,
     })
     fip.start()
